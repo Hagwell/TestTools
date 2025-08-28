@@ -19,7 +19,7 @@ This guide details the steps and commands to:
 Open PowerShell in your project root (`TestTools`):
 
 ```powershell
-cd "C:\Users\to080141\source\Workspaces\TestTools"
+cd "C:\Users\<username>\source\Workspaces\TestTools"
 git init
 git add .
 git commit -m "Initial commit"
@@ -29,11 +29,11 @@ git commit -m "Initial commit"
 
 ## 3. Create a New GitHub Repository and Push
 1. Go to [GitHub](https://github.com/new) and create a new repository (e.g., `TestTools`).
-2. Copy the repository URL (e.g., `https://github.com/yourusername/TestTools.git`).
+2. Copy the repository URL (e.g., `https://github.com/Hagwell/TestTools.git`).
 3. Add the remote and push:
 
 ```powershell
-git remote add origin https://github.com/yourusername/TestTools.git
+git remote add origin https://github.com/Hagwell/TestTools.git
 git branch -M main
 git push -u origin main
 ```
