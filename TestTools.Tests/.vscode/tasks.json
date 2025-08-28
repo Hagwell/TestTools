@@ -1,0 +1,13 @@
+{
+	"version": "2.0.0",
+	"tasks": [
+		{
+			"type": "shell",
+			"label": "Generate HTML Coverage Report",
+			"command": "reportgenerator -reports:\"TestResults/**/coverage.cobertura.xml\" -targetdir:\"TestCoverageReport\" -reporttypes:Html",
+			"problemMatcher": [],
+			"group": "test",
+			"isBackground": false
+		}
+	]
+}

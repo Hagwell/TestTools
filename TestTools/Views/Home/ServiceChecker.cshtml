@@ -1,0 +1,202 @@
+@model IEnumerable<TestTools.Models.ApiEndpointModel>
+@{
+    ViewData["Title"] = "Service Checker";
+}
+
+<link rel="stylesheet" href="~/css/service-checker.css" />
+
+<div class="container-fluid">
+    <div class="row">
+        <div class="col-12">
+            <div class="card w-100 my-4">
+                <div class="card-header bg-primary text-white">
+                    <h2 class="mb-0 text-center"><i class="fas fa-server"></i> Service Status Tool</h2>
+                </div>
+                <div class="card-body">
+                    <p class="mb-3 text-center">Monitor the status and response times of API endpoints and services. Use this tool to check service availability and export results for analysis.</p>
+                    <!-- Check All Endpoints Button (moved above table) -->
+                    <div class="mb-3 d-flex justify-content-center">
+                        <button id="checkAllBtn" class="btn btn-primary flex-fill w-auto" title="Check all endpoints">
+                            <i class="fas fa-sync-alt"></i> Check All Endpoints
+                        </button>
+                    </div>
+                    <div class="tab-content" id="serviceTabContent">
+                        <div class="tab-pane fade show active" id="checker" role="tabpanel">
+                            <!-- Service Status Table -->
+                            <div class="card-header bg-primary text-white">
+                                <h5 class="mb-0 text-center"><i class="fas fa-list-alt"></i> Service Status</h5>
+                            </div>
+                            <div class="card-body">
+                                <div class="table-responsive">
+                                    <table class="table table-hover" id="apiTable">
+                                        <thead class="table-header">
+                                            <tr>
+                                                <th>Service Name</th>
+                                                <th>
+                                                    Status
+                                                    <button type="button" class="btn btn-link p-0 m-0 align-baseline" data-bs-toggle="modal" data-bs-target="#statusKeyModal" title="Status Key">
+                                                        <i class="fas fa-info-circle text-info ms-1"></i>
+                                                    </button>
+                                                </th>
+                                                <th>Response Time</th>
+                                                <th>Actions</th>
+                                            </tr>
+                                        </thead>
+                                        <tbody>
+                                            @foreach (var api in Model.Where(x => x.Active))
+                                            {
+                                                <tr data-url="@api.Url">
+                                                    <td>
+                                                        <strong>@api.Name</strong>
+                                                        <br>
+                                                        <small class="text-muted">@api.Url</small>
+                                                    </td>
+                                                    <td class="status-cell">
+                                                        <span class="status-light status-unknown"></span>
+                                                        <span class="status-text">Unknown</span>
+                                                    </td>
+                                                    <td>
+                                                        <span class="response-time-text">-</span>
+                                                    </td>
+                                                    <td>
+                                                        <button class="btn btn-sm btn-outline-primary check-btn" title="Check this endpoint">
+                                                            <i class="fas fa-check"></i> Check
+                                                        </button>
+                                                    </td>
+                                                </tr>
+                                            }
+                                        </tbody>
+                                    </table>
+                                </div>
+                            </div>
+                            <!-- View Metrics Button (moved below table, show/hide toggle) -->
+                            <div class="mb-3 d-flex justify-content-center">
+                                <button id="viewMetricsBtn" class="btn btn-primary flex-fill w-auto" title="Show/Hide metrics graph" data-bs-toggle="button" aria-pressed="false" autocomplete="off">
+                                    <i class="fas fa-chart-bar"></i> <span id="viewMetricsBtnText">View Metrics</span>
+                                </button>
+                            </div>
+                            <!-- Service Metrics Chart Section (object below button) -->
+                            <div id="serviceMetricsSection" class="card mb-4 d-none">
+                                <div class="card-header bg-primary text-white">
+                                    <h5 class="mb-0 text-center"><i class="fas fa-chart-bar"></i> Service Metrics</h5>
+                                </div>
+                                <div class="card-body">
+                                    <div class="d-flex align-items-center mb-2 justify-content-start">
+                                        <div class="me-4">
+                                            <label for="metricsChartType" class="me-2">Chart Type:</label>
+                                            <select id="metricsChartType" class="form-select d-inline-block w-auto">
+                                                <option value="bar">Bar</option>
+                                                <option value="line">Line</option>
+                                            </select>
+                                        </div>
+                                        <div id="metricsChartLegend" class="d-flex align-items-center">
+                                            <span class="legend-item me-3"><span class="status-light status-active legend-dot"></span> Active</span>
+                                            <span class="legend-item me-3"><span class="status-light status-slow legend-dot"></span> Slow</span>
+                                            <span class="legend-item me-3"><span class="status-light status-unavailable legend-dot"></span> Unavailable</span>
+                                            <span class="legend-item"><span class="status-light status-unknown legend-dot"></span> Unknown</span>
+                                        </div>
+                                    </div>
+                                    <div class="metrics-chart-wrapper text-center">
+                                        <canvas id="metricsChart"></canvas>
+                                    </div>
+                                </div>
+                            </div>
+                            <!-- Status Key Modal -->
+                            <div class="modal fade" id="statusKeyModal" tabindex="-1" aria-labelledby="statusKeyModalLabel" aria-hidden="true">
+                                <div class="modal-dialog modal-dialog-centered modal-lg">
+                                    <div class="modal-content border border-primary">
+                                        <div class="modal-header bg-primary text-white py-2 px-3 d-flex justify-content-center align-items-center position-relative">
+                                            <div class="flex-grow-1 d-flex justify-content-center align-items-center">
+                                                <h5 class="modal-title mb-0 text-center w-100" id="statusKeyModalLabel">Status Key</h5>
+                                            </div>
+                                            <button type="button" class="btn-close btn-close-white align-self-center ms-auto" data-bs-dismiss="modal" aria-label="Close"></button>
+                                        </div>
+                                        <div class="modal-body d-flex align-items-center justify-content-start" style="min-height: 220px;">
+                                            <table class="table table-borderless table-sm mb-0 mx-auto" style="width: auto;">
+                                                <tbody>
+                                                    <tr>
+                                                        <td class="align-middle"><span class="status-light status-active legend-dot"></span></td>
+                                                        <td class="align-middle"><strong>Active</strong></td>
+                                                        <td class="align-middle">JSON Response: 200 OK, &lt; 200ms</td>
+                                                    </tr>
+                                                    <tr>
+                                                        <td class="align-middle"><span class="status-light status-slow legend-dot"></span></td>
+                                                        <td class="align-middle"><strong>Slow</strong></td>
+                                                        <td class="align-middle">JSON Response: 200 OK, Response Time &gt; 500ms</td>
+                                                    </tr>
+                                                    <tr>
+                                                        <td class="align-middle"><span class="status-light status-unavailable legend-dot"></span></td>
+                                                        <td class="align-middle"><strong>Unavailable</strong></td>
+                                                        <td class="align-middle">JSON Response: 500 OK, Response Time &lt; 200ms</td>
+                                                    </tr>
+                                                    <tr>
+                                                        <td class="align-middle"><span class="status-light status-unknown legend-dot"></span></td>
+                                                        <td class="align-middle"><strong>Unknown</strong></td>
+                                                        <td class="align-middle">Endpoint not checked</td>
+                                                    </tr>
+                                                </tbody>
+                                            </table>
+                                        </div>
+                                        <div class="modal-footer py-2 px-3 border-0">
+                                            <button type="button" class="btn btn-primary w-100" data-bs-dismiss="modal">OK</button>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <!-- Actions Sub-Card (now inside main card-body, at the bottom) -->
+                            <div class="card mt-4">
+                                <div class="card-header bg-primary text-white text-center" style="border-radius:0.5rem 0.5rem 0 0;">
+                                    <h4 class="mb-0 text-center"><i class="fas fa-tools"></i> Actions</h4>
+                                </div>
+                                <div class="card-body">
+                                    <div class="d-grid gap-2">
+                                        <button class="btn btn-primary flex-fill action-btn" id="checkActiveBtn" onclick="checkActiveServices()" title="Check only active services" disabled>
+                                            <i class="fas fa-play"></i> Check Only Active Services
+                                        </button>
+                                        <button class="btn btn-primary flex-fill action-btn" id="checkFailedBtn" onclick="checkFailedServices()" title="Recheck failed services" disabled>
+                                            <i class="fas fa-exclamation-triangle"></i> Recheck Failed Services
+                                        </button>
+                                        <button class="btn btn-primary flex-fill action-btn" id="exportBtn" onclick="exportResults()" title="Export results" disabled>
+                                            <i class="fas fa-download"></i> Export Results
+                                        </button>
+                                        <button class="btn btn-primary flex-fill action-btn" data-bs-toggle="modal" data-bs-target="#addEndpointModal" title="Add new API endpoint" hidden>
+                                            <i class="fas fa-plus-circle"></i> Add Endpoint
+                                        </button>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<!-- Remove service-checker.css, use only site.css -->
+<link rel="stylesheet" href="~/css/site.css" />
+<!-- Page-specific JavaScript -->
+<script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.1/dist/chart.umd.min.js"></script>
+<script src="~/js/service-checker.js" asp-append-version="true"></script>
+<script>
+// --- Show/Hide Metrics Button Logic ---
+document.addEventListener('DOMContentLoaded', function() {
+    const viewMetricsBtn = document.getElementById('viewMetricsBtn');
+    const metricsSection = document.getElementById('serviceMetricsSection');
+    const viewMetricsBtnText = document.getElementById('viewMetricsBtnText');
+    if (viewMetricsBtn && metricsSection) {
+        viewMetricsBtn.addEventListener('click', function() {
+            if (metricsSection.classList.contains('d-none')) {
+                metricsSection.classList.remove('d-none');
+                viewMetricsBtnText.textContent = 'Hide Metrics';
+                // Always update metrics graph when shown
+                if (typeof initializeViewMetrics === 'function') {
+                    initializeViewMetrics();
+                }
+            } else {
+                metricsSection.classList.add('d-none');
+                viewMetricsBtnText.textContent = 'View Metrics';
+            }
+        });
+    }
+});
+</script>

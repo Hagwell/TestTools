@@ -1,0 +1,38 @@
+DPIA Screening Questions
+
+To be completed by the project lead 
+
+Please complete the table below. Answering “Yes” to any of the screening questions below represents a potential IG risk factor that will have to be further analysed to ensure those risks are identified, assessed and mitigated wherever possible by working through sections A, B and C of this document.
+
+Category
+Screening question
+Detail
+Identity
+Will the project involve the collection of new information identifiable about individuals? 
+The outline of this project will be to investigate and develop local AI applications for use within a test or development environment, therefore there should be no collection of person identifiable information. This would only change if in the future, user accounts were required to create a history of user conversations.
+Identity
+Will the project compel individuals to provide personal information about themselves? 
+There is currently no plan to enable the usage of personal details to any of the developments, unless in the case of uploading contextual document files containing personal information. However, we would ensure messaging is displayed within the application to discourage this practice.
+Multiple organisations
+Will information about individuals be disclosed to organisations or people who have not previously had routine access to the information? 
+There will be no 3rd party involvement with this development and any developed applications would only be accessible from within the DHCW test and development environments.
+Data
+Are you using information about individuals for a purpose it is not currently used for, or in a way it is not currently used? 
+There is no current plan to collate user specific data within any of the generated applications.
+Data
+Does the project involve using new technology which might be perceived as being privacy intruding for example biometrics or facial recognition? 
+We are investigating the possibility of developing an interactive testing agent in the long term, which would utilise python tools to perform web search and scrape functionality with the application. However, this functionality is generally available and heavily used in automation processes such as Selenium testing, therefore I don’t believe it could be perceived in this way. 
+Data
+Will the project result in you making decisions or taking action around individuals in ways which could have a significant impact on them? 
+Again, with the expanse of agentic workflows in AI, there is the possibility to use the models in these types of ways (Eg: scoring job applications). Although, this is not the intention of the application, I can see how it is possible to misuse it in this way, however, I believe we may be able to ensure this is not possible by adding specification to the AI model prompt, to look out for specific language and advise the user of the restrictions.
+Data
+Is the information about individuals of a kind particularly likely to raise privacy concerns or expectations? For example health records, criminal records, or other information that people are likely to consider as private? 
+There will be no direct access to this kind of data, therefore I do not believe this to be an issue.
+Data
+Will the project require you to contact individuals in ways which they may find intrusive? 
+There is no current plan to collate user specific data within any of the generated applications.
+Storage
+Will the information/project be stored in the cloud?
+(n.b. if answer is yes only to this question, please complete question 1 and associated cloud risk assessment)
+No, while there may be a necessity to move to a cloud platform in the long term, the specific outline of this project is to develop an internal application for usage within our test and development teams, to gain a greater understanding of the technology stack and how we can utilise it to improve efficiency and delivery times within our respective projects.
+

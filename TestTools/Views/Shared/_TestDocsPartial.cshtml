@@ -1,0 +1,270 @@
+@model TestTools.Models.DocumentTabsViewModel
+
+<div class="card tool-container w-100">
+    <div class="card-header bg-primary text-white text-center">
+        <h4 class="mb-0 text-center"><i class="fas fa-book me-2"></i>Test Documents</h4>
+    </div>
+    <div class="card-body">
+        <p class="mb-3 text-center">Browse, filter, and view a range of test documents and guides. Use the controls below to locate and preview documentation relevant to your testing needs.</p>
+        <!-- Filterable Table -->
+        <div class="mb-3">
+            <div class="input-group">
+                <input type="text" id="testDocumentFilter" class="form-control" placeholder="Filter documents...">
+                <select id="testCategoryFilter" class="form-select" style="max-width: 200px;">
+                    <option value="all">All Categories</option>
+                    <option value="Education">Education</option>
+                    <option value="Framework">Framework</option>
+                    <option value="Support">Support</option>
+                    <option value="Instructions">Instructions</option>
+                </select>
+            </div>
+        </div>
+
+        <div class="table-responsive w-100">
+            <table id="testDocumentsTable" class="table table-striped table-hover tool-table">
+                <thead>
+                    <tr>
+                        <th>Document</th>
+                        <th>Category</th>
+                        <th>Size</th>
+                        <th>Action</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    @{
+                        var hasDocuments = false;
+                        
+                        if (Model.FrameworkGuides?.EducationDocuments?.Any() == true)
+                        {
+                            hasDocuments = true;
+                            foreach (var doc in Model.FrameworkGuides.EducationDocuments)
+                            {
+                                <tr data-category="Education">
+                                    <td>@doc.Name</td>
+                                    <td>Education</td>
+                                    <td>@doc.SizeFormatted</td>
+                                    <td>
+                                        <button class="btn btn-sm btn-primary view-document" data-document-path="@doc.Path" data-document-name="@doc.Name"><i class="fas fa-eye"></i> View Document</button>
+                                    </td>
+                                </tr>
+                            }
+                        }
+                        
+                        if (Model.FrameworkGuides?.FrameworkDocuments?.Any() == true)
+                        {
+                            hasDocuments = true;
+                            foreach (var doc in Model.FrameworkGuides.FrameworkDocuments)
+                            {
+                                <tr data-category="Framework">
+                                    <td>@doc.Name</td>
+                                    <td>Framework</td>
+                                    <td>@doc.SizeFormatted</td>
+                                    <td>
+                                        <button class="btn btn-sm btn-primary view-document" data-document-path="@doc.Path" data-document-name="@doc.Name"><i class="fas fa-eye"></i> View Document</button>
+                                    </td>
+                                </tr>
+                            }
+                        }
+                        
+                        if (Model.SupportGuides?.SupportDocuments?.Any() == true)
+                        {
+                            hasDocuments = true;
+                            foreach (var doc in Model.SupportGuides.SupportDocuments)
+                            {
+                                <tr data-category="Support">
+                                    <td>@doc.Name</td>
+                                    <td>Support</td>
+                                    <td>@doc.SizeFormatted</td>
+                                    <td>
+                                        <button class="btn btn-sm btn-primary view-document" data-document-path="@doc.Path" data-document-name="@doc.Name"><i class="fas fa-eye"></i> View Document</button>
+                                    </td>
+                                </tr>
+                            }
+                        }
+                        
+                        if (Model.SupportGuides?.InstructionsDocuments?.Any() == true)
+                        {
+                            hasDocuments = true;
+                            foreach (var doc in Model.SupportGuides.InstructionsDocuments)
+                            {
+                                <tr data-category="Instructions">
+                                    <td>@doc.Name</td>
+                                    <td>Instructions</td>
+                                    <td>@doc.SizeFormatted</td>
+                                    <td>
+                                        <button class="btn btn-sm btn-primary view-document" data-document-path="@doc.Path" data-document-name="@doc.Name"><i class="fas fa-eye"></i> View Document</button>
+                                    </td>
+                                </tr>
+                            }
+                        }
+                        
+                        if (!hasDocuments)
+                        {
+                            <tr id="noTestDocumentsRow">
+                                <td colspan="4" class="text-center">No documents found</td>
+                            </tr>
+                        }
+                    }
+                </tbody>
+            </table>
+        </div>
+
+        <div class="document-viewer d-none mb-4">
+            <div class="d-flex justify-content-between align-items-center mb-2">
+                <h5 class="document-name mb-0"></h5>
+                <button class="btn btn-sm btn-secondary close-document"><i class="fas fa-times"></i> Close Document</button>
+            </div>
+            <div class="ratio ratio-16x9">
+                <iframe src="" class="document-iframe" frameborder="0"></iframe>
+            </div>
+        </div>
+
+        <script>
+            document.addEventListener('DOMContentLoaded', function() {
+                // Filter functionality
+                const filterInput = document.getElementById('testDocumentFilter');
+                const categoryFilter = document.getElementById('testCategoryFilter');
+                const table = document.getElementById('testDocumentsTable');
+                const noDocumentsRow = document.getElementById('noTestDocumentsRow');
+
+                function filterTestTable() {
+                    const filterText = filterInput.value.toLowerCase();
+                    const category = categoryFilter.value;
+
+                    let visibleRows = 0;
+                    const rows = table.querySelectorAll('tbody tr:not(#noTestDocumentsRow)');
+
+                    rows.forEach(row => {
+                        const documentName = row.querySelector('td:first-child').textContent.toLowerCase();
+                        const documentCategory = row.dataset.category;
+
+                        const nameMatches = documentName.includes(filterText);
+                        const categoryMatches = category === 'all' || documentCategory === category;
+
+                        if (nameMatches && categoryMatches) {
+                            row.style.display = '';
+                            visibleRows++;
+                        } else {
+                            row.style.display = 'none';
+                        }
+                    });
+
+                    // Show or hide the 'no documents' message
+                    if (noDocumentsRow) {
+                        noDocumentsRow.style.display = visibleRows === 0 ? '' : 'none';
+                    }
+                }
+
+                if (filterInput) {
+                    filterInput.addEventListener('input', filterTestTable);
+                }
+
+                if (categoryFilter) {
+                    categoryFilter.addEventListener('change', filterTestTable);
+                }
+            });
+        </script>
+    </div>
+    </div>
+    <!-- Actions Section (hidden) -->
+    <div class="d-none">
+        <div class="card-header bg-primary text-white">
+            <h5 class="mb-0 text-center"><i class="fas fa-tools"></i> Actions</h5>
+        </div>
+        <div class="card-body">
+            <div class="d-grid gap-2 mb-3">
+                <button class="btn btn-primary btn-upload-white-border w-100" type="button" data-bs-toggle="collapse" data-bs-target="#uploadTestDocumentSection" aria-expanded="false" aria-controls="uploadTestDocumentSection" hidden>
+                    <i class="fas fa-plus-circle"></i> Upload Document
+                </button>
+            </div>
+            <div class="collapse" id="uploadTestDocumentSection">
+                <div class="card mb-4">
+                    <div class="card-header bg-primary text-white">
+                        <h5 class="mb-0 text-center">Upload New Document</h5>
+                    </div>
+                    <div class="card-body">
+                        <form method="post" asp-action="UploadDocument" asp-controller="Home" enctype="multipart/form-data" class="tool-form">
+                            <div class="mb-3">
+                                <label class="form-label">Select Category:</label>
+                                <div class="form-check">
+                                    <input class="form-check-input" type="radio" name="Category" id="categoryEducation" value="Education" checked>
+                                    <label class="form-check-label" for="categoryEducation">
+                                        Education
+                                    </label>
+                                </div>
+                                <div class="form-check">
+                                    <input class="form-check-input" type="radio" name="Category" id="categoryFramework" value="Framework">
+                                    <label class="form-check-label" for="categoryFramework">
+                                        Framework
+                                    </label>
+                                </div>
+                                <div class="form-check">
+                                    <input class="form-check-input" type="radio" name="Category" id="categorySupport" value="Support">
+                                    <label class="form-check-label" for="categorySupport">
+                                        Support
+                                    </label>
+                                </div>
+                                <div class="form-check">
+                                    <input class="form-check-input" type="radio" name="Category" id="categoryInstructions" value="Instructions">
+                                    <label class="form-check-label" for="categoryInstructions">
+                                        Instructions
+                                    </label>
+                                </div>
+                            </div>
+                            <div class="mb-3">
+                                <label class="form-label" for="uploadTestFile">Select File:</label>
+                                <input type="file" class="form-control" id="uploadTestFile" name="File" accept="application/pdf,.pdf" required>
+                            </div>
+                            <button type="submit" class="btn btn-primary btn-sm border border-white"><i class="fas fa-upload"></i> Upload Document</button>
+                        </form>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+    // Inline PDF viewer in table row below selected document
+    document.addEventListener('DOMContentLoaded', function() {
+        document.addEventListener('click', function(e) {
+            var target = e.target;
+            // Handle View Document button
+            if (target.classList.contains('view-document') || target.closest('.view-document')) {
+                var btn = target.classList.contains('view-document') ? target : target.closest('.view-document');
+                var documentPath = btn.getAttribute('data-document-path');
+                var documentName = btn.getAttribute('data-document-name');
+                var row = btn.closest('tr');
+                var table = row.closest('table');
+                // Remove any existing viewer row
+                var oldViewerRow = table.querySelector('.inline-document-viewer-row');
+                if (oldViewerRow) oldViewerRow.remove();
+                // Create new viewer row
+                var viewerRow = document.createElement('tr');
+                viewerRow.className = 'inline-document-viewer-row';
+                var viewerCell = document.createElement('td');
+                viewerCell.colSpan = 4;
+                viewerCell.innerHTML = `
+                    <div class="document-viewer-inline mb-4" style="max-width:100%;">
+                        <div class="d-flex justify-content-between align-items-center mb-2">
+                            <h5 class="document-name mb-0">${documentName}</h5>
+                            <button class="btn btn-sm btn-secondary close-inline-document"><i class="fas fa-times"></i> Close Document</button>
+                        </div>
+                        <div class="ratio ratio-16x9" style="max-width:100%; max-height:800px;">
+                            <iframe src="${documentPath}" class="document-iframe" frameborder="0" style="width:100%; max-height:800px; height:800px; min-height:200px; background:#f8f9fa;"></iframe>
+                        </div>
+                    </div>
+                `;
+                viewerRow.appendChild(viewerCell);
+                // Insert after the clicked row
+                row.parentNode.insertBefore(viewerRow, row.nextSibling);
+            }
+            // Handle close button in inline viewer
+            if (target.classList.contains('close-inline-document') || target.closest('.close-inline-document')) {
+                var btn = target.classList.contains('close-inline-document') ? target : target.closest('.close-inline-document');
+                var viewerRow = btn.closest('tr.inline-document-viewer-row');
+                if (viewerRow) viewerRow.remove();
+            }
+        });
+    });
+    </script>
+</div>

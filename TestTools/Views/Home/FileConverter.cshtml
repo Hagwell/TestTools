@@ -1,0 +1,90 @@
+@{
+    ViewData["Title"] = "File Converter";
+}
+
+<link rel="stylesheet" href="~/css/site.css" />
+
+<div class="container-fluid p-0">
+    <div class="row">
+        <div class="col-12">
+            <div class="card w-100 my-4">
+                <div class="card-header bg-primary text-white">
+                    <h2 class="mb-0 text-center"><i class="fas fa-file-import me-2"></i> File Conversion Tool</h2>
+                </div>
+                <div class="card-body">
+                    <p class="mb-3 text-center">Convert documents/images between popular formats and Base64 data. Select the desired tool below, upload your image/document and select the appropriate conversion option.</p>
+                    <ul class="nav nav-tabs justify-content-center" id="fileConverterTabs" role="tablist">
+                      <li class="nav-item" role="presentation">
+                        <button class="nav-link px-4 py-2 active" id="doc-tab" data-bs-toggle="tab" data-bs-target="#doc" type="button" role="tab" aria-controls="doc" aria-selected="true">
+                          Document
+                        </button>
+                      </li>
+                      <li class="nav-item" role="presentation">
+                        <button class="nav-link px-4 py-2" id="img-tab" data-bs-toggle="tab" data-bs-target="#img" type="button" role="tab" aria-controls="img" aria-selected="false">
+                          Image
+                        </button>
+                      </li>
+                      <li class="nav-item" role="presentation">
+                        <button class="nav-link px-4 py-2" id="base64-tab" data-bs-toggle="tab" data-bs-target="#base64" type="button" role="tab" aria-controls="base64" aria-selected="false">
+                          Base64
+                        </button>
+                      </li>
+                    </ul>
+                    <div id="fileConverterTabsContent" class="tab-content">
+                        <div class="tab-pane fade show active" id="doc" role="tabpanel" aria-labelledby="doc-tab">
+                            <div class="card-body">
+                                <div class="card-header bg-primary text-white text-center">
+                                    <h5 class="mb-0 text-center"><i class="fas fa-exchange-alt"></i> Document Conversion Tool</h5>
+                                </div>
+                                @await Html.PartialAsync("_DocumentConversion")
+                            </div>
+                        </div>
+                        <div class="tab-pane fade" id="img" role="tabpanel" aria-labelledby="img-tab">
+                            <div class="card-body">
+                                <div class="card-header bg-primary text-white text-center">
+                                    <h5 class="mb-0 text-center"><i class="fas fa-exchange-alt"></i> Image Conversion Tool</h5>
+                                </div>
+                                @await Html.PartialAsync("_ImageConversion")
+                            </div>
+                        </div>
+                        <div class="tab-pane fade" id="base64" role="tabpanel" aria-labelledby="base64-tab">
+                            <div class="card-body">
+                                <div class="card-header bg-primary text-white text-center">
+                                    <h5 class="mb-0 text-center"><i class="fas fa-exchange-alt"></i> Base64 Conversion Tool</h5>
+                                </div>
+                                @await Html.PartialAsync("_Base64Conversion")
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- Preview Modal -->
+<div class="modal fade" id="previewModal" tabindex="-1" aria-labelledby="previewModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-xl modal-dialog-scrollable">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="previewModalLabel">Preview</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+                <div id="previewContent" class="w-100" style="min-height: 60vh;"></div>
+            </div>
+            <div class="modal-footer">
+                <a id="downloadBtn" class="btn btn-success" target="_blank">Download</a>
+                <button id="discardBtn" type="button" class="btn btn-outline-danger">Discard</button>
+                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+@section Scripts {
+    <script src="~/js/file-converter.js" asp-append-version="true"></script>
+}
+@section Styles {
+    <link rel="stylesheet" href="~/css/site.css" />
+}

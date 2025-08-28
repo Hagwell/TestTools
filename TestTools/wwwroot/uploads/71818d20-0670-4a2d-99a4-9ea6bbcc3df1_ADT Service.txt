@@ -1,0 +1,24 @@
+-- ADT Service -- Connect to SQL-CRS-TES-L Endpoint --
+
+Use [NDRAuditEvents]
+Select *,
+CAST(Message as XML)
+from Event
+where LoggingApplication = 'SYSTEM' and DateTimeInserted > GETDATE()-1 and EventTypeCode LIKE '%NDR%'
+Order by DateTimeInserted 
+desc
+
+-- Patient Document Service Check (DAL) -- Connect to SQL-CRS-TES-L Endpoint --
+
+use NDR
+select dvh.SubjectGivenName,dvh.SubjectFamilyName,dvh.DocumentSupersessionSetId,dvh.SetSequenceNumber,dvh.DocumentDateTime,dvh.Id,dvh.Revoked,da.Value
+from DocumentSupersessionSetSubjectIdentifier dsssi
+      join DocumentVersionHeader dvh
+            on dsssi.DocumentSupersessionSetId =  dvh.DocumentSupersessionSetId
+      join DocumentAttribute da
+            on dvh.Id = da.DocumentId
+where dsssi. Value = 'E4115280' and da.Value = 'DISCHARGEADVICELETTER' and DocumentDateTime > GETDATE()-1
+order by dvh.DocumentSupersessionSetId,dvh.SetSequenceNumber, SubjectFamilyName
+
+-- Use this to find the tasks for a particular document
+select * from Task where DocumentSupersessionSetId = 'Enter DocumentSupersessionSetId returned from above'

@@ -1,0 +1,159 @@
+Steps to automate table data 
+
+Step 1. Set up Feature
+- Create a scenario within the project feature in the below format:
+
+-- Example for WpasAdt.feature --
+
+@ADT-AdmissionScenarioA
+Scenario: 004a - Admission Scenario -
+	Given I have accessed the WPAS 'admission' page
+	Then I will see the WPAS 'admission' page displayed
+	When I complete the Admission Form with the following data
+	| admissionDate | admissionTime | hospital	 | ward			| service    | clinician	| admissionMethod | source        |
+	| present		| now			| Glangwilli | Tysul Ward	| Cardiology | Wilson, D G	| Emergency - GP  | Referral - GP |
+	
+Step 2. Define Steps in project
+- Right click on the feature and select 'Define Steps' and click 'Copy to clipboard' button
+- Access or create a Steps.cs file and paste in the clipboard contents within the class structure
+
+-- Example for AdtSteps.cs --
+
+namespace WPAS_ADT_Forms.Steps
+{
+    [Binding]
+    public class WpasAdtSteps
+    {
+        private WpasAdtPage Adt;
+        private ChromeDriver driver;
+
+        public WpasAdtSteps(IObjectContainer container)
+        {
+            driver = container.Resolve<ChromeDriver>();
+            Adt = container.Resolve<WpasAdtPage>();
+        }
+		
+		[When("I complete the Admissiomn Form with the following data")]
+        public void WhenICompleteTheAdmissiomnFormWithTheFollowingData(Table table)
+        {
+            var tableData = table.CreateInstance<AdtModel>();
+
+            Adt.FullAdmission(
+                tableData.AdmissionDate.Equals("present") ? Parameters.Dates.AltPresent : tableData.AdmissionDate,
+                tableData.AdmissionTime.Equals("now") ? Parameters.Dates.AltPresent : tableData.AdmissionTime,
+                tableData.Hospital.Equals("Glangwili") ? AdtParams.Hospitals.Hdd1 : tableData.Hospital,
+                tableData.Ward.Equals("Tysul Ward") ? Parameters.Ward.GghTysul : tableData.Ward,
+                tableData.Service.Equals("Cardiology") ? AdtParams.Hospitals.Hdd1 : tableData.Service,
+                tableData.Clinician.Equals("Wilson, D G") ? AdtParams.Clinicians.CardioClin1 : tableData.Clinician,
+                tableData.AdmissionMethod.Equals("Emergency - GP") ? AdtParams.AdmissionMethod.Method1 : tableData.AdmissionMethod,
+                tableData.Source.Equals("Referral - GP") ? AdtParams.AdmissionSource.Source1 : tableData.Source);
+        }
+    }
+}
+
+- Update the step definition class to look similar to:
+
+		[When("I complete the Admissiomn Form with the following data")]
+        public void WhenICompleteTheAdmissiomnFormWithTheFollowingData(Table table)
+        {
+            var tableData = table.CreateInstance<AdtModel>();
+
+            Adt.FullAdmission(
+                tableData.AdmissionDate.Equals("present") ? Parameters.Dates.AltPresent : tableData.AdmissionDate,
+                tableData.AdmissionTime.Equals("now") ? Parameters.Dates.AltPresent : tableData.AdmissionTime,
+                tableData.Hospital.Equals("Glangwili") ? AdtParams.Hospitals.Hdd1 : tableData.Hospital,
+                tableData.Ward.Equals("Tysul Ward") ? Parameters.Ward.GghTysul : tableData.Ward,
+                tableData.Service.Equals("Cardiology") ? AdtParams.Hospitals.Hdd1 : tableData.Service,
+                tableData.Clinician.Equals("Wilson, D G") ? AdtParams.Clinicians.CardioClin1 : tableData.Clinician,
+                tableData.AdmissionMethod.Equals("Emergency - GP") ? AdtParams.AdmissionMethod.Method1 : tableData.AdmissionMethod,
+                tableData.Source.Equals("Referral - GP") ? AdtParams.AdmissionSource.Source1 : tableData.Source);
+        }
+		
+3. Create Table data model class
+- Create a new Model.cs and enter the string data parameters in the below format:
+
+-- Example for AdtModel.cs --
+namespace WPAS_ADT_Forms.Hooks
+{
+    public class AdtModel
+    {
+        public string AdmissionUrl { get; set; }
+        public string EncounterUrl { get; set; }
+        public string TransferUrl { get; set; }
+        public string AdmissionDate { get; set; }
+        public string AdmissionTime { get; set; }
+        public string Hospital { get; set; }
+        public string Ward { get; set; }
+        public string Service { get; set; }
+        public string Clinician { get; set; }
+        public string AdmissionMethod { get; set; }
+        public string Source { get; set; }
+    }
+}
+
+4. Add page interaction code
+- Update/create the corresponding page class to include the table actions required:
+
+-- Example Actions class -- 
+
+		public void FullAdmission(string admissionDate, string admissnTime, string hospital, string ward, string service, string clinician, string method, string source)
+		{
+			_driver.WaitForReady();
+			EnterAdmissionDate(admissionDate);
+			EnterAdmissionTime(admissnTime);
+			SelectAdmissionHospital(hospital);
+			SelectAdmissionWard(ward);
+			SelectAdmissionService(service);
+			SelectAdmissionClinician(clinician);
+			SelectAdmissionMethod(method);
+			SelectAdmissionSource(source);
+			EnterUsername(Parameters.TestAccounts.User3);
+			EnterPassword(Parameters.TestAccounts.User3Password);
+			SelectAuthButton();
+			SelectAdmitButton();
+		}
+		
+-- Example for AdtPage.cs --
+
+namespace WPAS_ADT_Forms.Pages
+{
+    public class WpasAdtPage
+    {
+        private ChromeDriver _driver;
+        public WpasAdtPage(ChromeDriver driver) => _driver = driver;
+		
+		private IWebElement PatientAdmissionDateFld => _driver.FindById("admission-date-0");
+		private IWebElement PatientAdmissionTimeFld => _driver.FindById("admission-date-1");
+		private IWebElement PatientAdmissionHospitalDrpDwn => _driver.FindById("hospital-autocomplete");
+		private IWebElement PatientAdmissionWardDrpDwn => _driver.FindById("ward-autocomplete");
+		private IWebElement PatientAdmissionServiceDrpDwn => _driver.FindById("service-autocomplete");
+		private IWebElement PatientAdmissionClinicianDrpDwn => _driver.FindById("clinicianService-autocomplete");
+		private IWebElement PatientAdmissionMethodDrpDwn => _driver.FindById("admitMethod-autocomplete");
+		private IWebElement PatientAdmissionSourceDrpDwn => _driver.FindById("source-autocomplete");
+		private IWebElement UsernameFld => _driver.FindById("username");
+		private IWebElement PasswordFld => _driver.FindById("password");
+		private IWebElement AdmitBtn => _driver.FindById("action-btn-0");
+		private IWebElement TransferBtn => _driver.FindById("action-btn-0");
+		private IWebElement DischargeBtn => _driver.FindById("discharge-27");
+		private IWebElement AuthBtn => _driver.FindById("auth");
+		
+		public void FullAdmission(string admissionDate, string admissnTime, string hospital, string ward, string service, string clinician, string method, string source)
+		{
+			_driver.WaitForReady();
+			EnterAdmissionDate(admissionDate);
+			EnterAdmissionTime(admissnTime);
+			SelectAdmissionHospital(hospital);
+			SelectAdmissionWard(ward);
+			SelectAdmissionService(service);
+			SelectAdmissionClinician(clinician);
+			SelectAdmissionMethod(method);
+			SelectAdmissionSource(source);
+			EnterUsername(Parameters.TestAccounts.User3);
+			EnterPassword(Parameters.TestAccounts.User3Password);
+			SelectAuthButton();
+			SelectAdmitButton();
+		}
+    }
+}
+
+- This should allow the test to be built and run.

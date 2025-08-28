@@ -1,0 +1,9 @@
+https://github.com/timlrx/simple-ai-agents/blob/main/README.md
+https://www.linkedin.com/pulse/how-build-rag-chatbot-using-ollama-serve-llms-locally-sri-laxmi-beapc/
+https://github.com/premthomas/Ollama-and-Agents
+https://medium.com/@samarrana407/step-by-step-building-intelligent-agents-using-crewai-groq-or-ollama-in-your-local-system-1f4cd2b7de24
+https://github.com/Samargithubb/AI-Agent/tree/main
+https://neuralocity.medium.com/build-a-chatbot-application-with-ollama-and-open-source-models-b7b35a55e28d
+https://www.linkedin.com/pulse/build-your-own-chatbot-langchain-ollama-karthik-g-kumar--aejoc/
+https://www.youtube.com/watch?v=BA0656SdODU
+https://www.youtube.com/watch?v=rIRkxZSn-A8

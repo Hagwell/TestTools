@@ -1,0 +1,139 @@
+@{
+    ViewData["Title"] = "Patient Generator";
+}
+
+<link rel="stylesheet" href="~/css/site.css" />
+
+<div class="container-fluid p-0">
+    <div class="row">
+        <div class="col-12">
+            <div class="card w-100 my-4">
+                <div class="card-header bg-primary text-white">
+                    <h2 class="mb-0 text-center"><i class="fas fa-user-md"></i> Patient Generator Tool</h2>
+                </div>
+                <div class="card-body">
+                    <p class="mb-3 text-center">Generate random patient data and HL7 messages for testing purposes</p>
+                    <ul class="nav nav-tabs justify-content-center" id="patientGenTabs" role="tablist">
+                        <li class="nav-item" role="presentation">
+                            <button class="nav-link active px-4 py-2" id="generator-tab" data-bs-toggle="tab" data-bs-target="#generator" type="button" role="tab">
+                                <i class="fas fa-users"></i> Patient Generator
+                            </button>
+                        </li>
+                        <li class="nav-item" role="presentation">
+                            <button class="nav-link px-4 py-2" id="master-tab" data-bs-toggle="tab" data-bs-target="#master" type="button" role="tab">
+                                <i class="fas fa-file-medical"></i> Master Patient (HL7)
+                            </button>
+                        </li>
+                    </ul>
+
+                    <!-- Tab Content -->
+                    <div class="tab-content" id="patientTabContent">
+                        <!-- Patient Generator Tab -->
+                        <div class="tab-pane fade show active" id="generator" role="tabpanel">
+                            <div class="mt-4">
+                                <!-- Generation Settings -->
+                                <div class="card mb-4">
+                                    <div class="card-header bg-primary text-white">
+                                        <h5 class="mb-0 text-center"><i class="fas fa-cogs"></i> Generation Settings</h5>
+                                    </div>
+                                    <div class="card-body">
+                                        <form id="generateForm">
+                                            @Html.AntiForgeryToken()
+                                            <div class="mb-3">
+                                                <label for="patientCount" class="form-label">Number of Patients</label>
+                                                <input type="number" class="form-control" id="patientCount" min="1" max="1000" value="10" required>
+                                                <div class="form-text">Maximum 1000 patients</div>
+                                            </div>
+                                            <div class="d-grid gap-2">
+                                                <button type="submit" class="btn btn-primary w-100">
+                                                    <i class="fas fa-play"></i> Generate Patients
+                                                </button>
+                                            </div>
+                                        </form>
+                                    </div>
+                                </div>
+                                <!-- Generated Patients -->
+                                <div class="card mb-4">
+                                    <div class="card-header bg-primary text-white">
+                                        <h5 class="mb-0 text-center"><i class="fas fa-table"></i> Generated Patients</h5>
+                                    </div>
+                                    <div class="card-body">
+                                        <div id="patientsTable">
+                                            <div class="alert alert-info">No patients generated yet.</div>
+                                        </div>
+                                    </div>
+                                </div>
+                                <!-- Actions -->
+                                <div class="card my-4">
+                                    <div class="card-header bg-primary text-white text-center">
+                                        <h5 class="mb-0 text-center"><i class="fas fa-tools"></i> Actions</h5>
+                                    </div>
+                                    <div class="card-body">
+                                        <div class="d-grid gap-2">
+                                            <button id="exportBtn" class="btn btn-primary w-100" disabled>
+                                                <i class="fas fa-download"></i> Export CSV
+                                            </button>
+                                            <button id="clearBtn" class="btn btn-primary w-100" disabled>
+                                                <i class="fas fa-eraser"></i> Clear Results
+                                            </button>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <!-- Master Patient HL7 Tab -->
+                        <div class="tab-pane fade" id="master" role="tabpanel">
+                            <div class="mt-4">
+                                <!-- Generation Settings -->
+                                <div class="card mb-4">
+                                    <div class="card-header bg-primary text-white">
+                                        <h5 class="mb-0 text-center"><i class="fas fa-cogs"></i> HL7 Generator Settings</h5>
+                                    </div>
+                                    <div class="card-body">
+                                        <div class="d-grid gap-2">
+                                            <button id="generateMasterBtn" class="btn btn-primary w-100">
+                                                <i class="fas fa-play"></i> Generate Master Patient Index Message
+                                            </button>
+                                            <button id="generateAllWalesBtn" class="btn btn-primary w-100">
+                                                <i class="fas fa-play"></i> Generate All Wales Patient Messages
+                                            </button>
+                                        </div>
+                                    </div>
+                                </div>
+                                <!-- HL7 Message(s) -->
+                                <div class="card mb-4">
+                                    <div class="card-header bg-primary text-white">
+                                        <h5 class="mb-0 text-center"><i class="fas fa-code"></i> HL7 Message</h5>
+                                    </div>
+                                    <div class="card-body">
+                                        <pre id="hl7Message" class="hl7-message"></pre>
+                                    </div>
+                                </div>
+                                <!-- Actions -->
+                                <div class="card mb-4">
+                                    <div class="card-header bg-primary text-white text-center">
+                                        <h5 class="mb-0 text-center"><i class="fas fa-tools"></i> Actions</h5>
+                                    </div>
+                                    <div class="card-body">
+                                        <div class="d-grid gap-2">
+                                            <button id="clearMasterBtn" class="btn btn-primary w-100" disabled>
+                                                <i class="fas fa-eraser"></i> Clear Message
+                                            </button>
+                                            <button id="saveHL7Btn" class="btn btn-primary w-100" disabled>
+                                                <i class="fas fa-save"></i> Save HL7 File
+                                            </button>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+@section Scripts {
+    <script src="~/js/patient-generator.js"></script>
+}

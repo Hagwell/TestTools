@@ -1,0 +1,40 @@
+@* Partial view for document conversions *@
+<div class="card w-100 my-4">
+    <div class="card-body">
+        <form id="docForm" class="row g-3" onsubmit="return false;">
+            <div class="col-12">
+                <label for="docFile" class="form-label">Upload document</label>
+                <input class="form-control" type="file" id="docFile" name="file" accept=".pdf,.docx,.txt,.md,.html,application/pdf,application/vnd.openxmlformats-officedocument.wordprocessingml.document,text/plain,text/markdown,text/html" required />
+            </div>
+            <div class="col-12">
+                <label for="docTarget" class="form-label">Convert to</label>
+                <select class="form-select" id="docTarget" name="targetExt">
+                    <option value="pdf">PDF (.pdf)</option>
+                    <option value="docx">Word (.docx)</option>
+                    <option value="html">HTML (.html)</option>
+                    <option value="txt">Plain Text (.txt)</option>
+                    <option value="md">Markdown (.md)</option>
+                </select>
+            </div>
+            <div class="col-12 d-flex align-items-end">
+                <button type="submit" class="btn btn-primary w-100">Convert</button>
+            </div>
+        </form>
+        <div id="docStatus" class="mt-3"></div>
+    </div>
+    <div id="docPreviewCard" class="card my-2" style="display:none;">
+        <div class="card-header bg-success text-white">
+            <h5 class="mb-0 text-center">Conversion Preview</h5>
+        </div>
+        <div class="card-body" id="docPreviewContent"></div>
+        <div class="card-header bg-primary text-white text-center">
+            <h5 class="mb-0 text-center"><i class="fas fa-tools"></i> Actions</h5>
+        </div>
+        <div class="d-grid gap-2 p-3 bg-gradient" style="background: linear-gradient(90deg, #2678c4 0%, #143a61 100%);">
+            <a id="docDownloadBtn" class="btn btn-success w-100 mb-2" target="_blank"><i class="fas fa-download"></i> Download</a>
+            <button id="docWebPreviewBtn" type="button" class="btn btn-info w-100 mb-2" style="display:none;"><i class="fas fa-globe"></i> Web Preview</button>
+            <button id="docDiscardBtn" type="button" class="btn btn-outline-danger w-100 mb-2"><i class="fas fa-trash-alt"></i> Discard</button>
+            <button id="docClosePreviewBtn" type="button" class="btn btn-secondary w-100"><i class="fas fa-times"></i> Close</button>
+        </div>
+    </div>
+</div>

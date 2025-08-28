@@ -1,0 +1,39 @@
+@* Partial view for image conversions *@
+<div class="card w-100 my-4">
+    <div class="card-body">
+        <form id="imgForm" class="row g-3" onsubmit="return false;">
+            <div class="col-12">
+                <label for="imgFile" class="form-label">Upload image</label>
+                <input class="form-control" type="file" id="imgFile" name="file" accept="image/*,.png,.jpg,.jpeg,.gif,.bmp,.webp" required />
+            </div>
+            <div class="col-12">
+                <label for="imgTarget" class="form-label">Convert to</label>
+                <select class="form-select" id="imgTarget" name="targetExt">
+                    <option value="png">PNG (.png)</option>
+                    <option value="jpg">JPEG (.jpg)</option>
+                    <option value="gif">GIF (.gif)</option>
+                    <option value="bmp">BMP (.bmp)</option>
+                    <option value="webp">WEBP (.webp)</option>
+                </select>
+            </div>
+            <div class="col-12 d-flex align-items-end">
+                <button type="submit" class="btn btn-primary w-100">Convert</button>
+            </div>
+        </form>
+        <div id="imgStatus" class="mt-3"></div>
+    </div>
+    <div id="imgPreviewCard" class="card my-2" style="display:none;">
+        <div class="card-header bg-success text-white">
+            <h5 class="mb-0 text-center">Conversion Preview</h5>
+        </div>
+        <div class="card-body d-flex justify-content-center" id="imgPreviewContent"></div>
+        <div class="card-header bg-primary text-white text-center">
+            <h5 class="mb-0 text-center"><i class="fas fa-tools"></i> Actions</h5>
+        </div>
+        <div class="d-grid gap-2 p-3 bg-gradient" style="background: linear-gradient(90deg, #2678c4 0%, #143a61 100%);">
+            <a id="imgDownloadBtn" class="btn btn-success w-100 mb-2" target="_blank"><i class="fas fa-download"></i> Download</a>
+            <button id="imgDiscardBtn" type="button" class="btn btn-outline-danger w-100 mb-2"><i class="fas fa-trash-alt"></i> Discard</button>
+            <button id="imgClosePreviewBtn" type="button" class="btn btn-secondary w-100"><i class="fas fa-times"></i> Close</button>
+        </div>
+    </div>
+</div>

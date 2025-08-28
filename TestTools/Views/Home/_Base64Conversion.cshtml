@@ -1,0 +1,84 @@
+@* Partial view for Base64 encode *@
+<div class="card w-100 my-4">
+    <div class="card-body">
+        <form id="b64EncodeForm" class="row g-3" onsubmit="return false;">
+            <div class="col-12 mb-2">
+                <label for="b64File" class="form-label">Upload file (document or image)</label>
+                <input class="form-control" type="file" id="b64File" name="file" required />
+            </div>
+            <div class="col-12 mb-2">
+                <button type="submit" class="btn btn-primary w-100">Convert to Base64</button>
+            </div>
+        </form>
+    </div>
+    <div id="b64ResultCard" class="card my-2" style="display:none;">
+        <div class="card-header bg-success text-white">
+            <h5 class="mb-0 text-center">Encoded Base64</h5>
+        </div>
+        <div class="card-body">
+            <textarea id="b64Result" class="form-control" rows="6" readonly></textarea>
+        </div>
+    </div>
+    <div id="b64EncodeActionsCard" class="card my-2" style="display:none;">
+        <div class="card-header bg-primary text-white text-center">
+            <h5 class="mb-0 text-center"><i class="fas fa-tools"></i> Actions</h5>
+        </div>
+        <div class="card-body d-grid gap-2">
+            <button type="button" id="b64PreviewBtn" class="btn btn-outline-secondary w-100" disabled>Preview</button>
+            <button type="button" id="b64CopyBtn" class="btn btn-outline-dark w-100" disabled>Copy</button>
+        </div>
+    </div>
+    <div id="b64EncodePreviewCard" class="card my-2" style="display:none;">
+        <div class="card-header bg-success text-white">
+            <h5 class="mb-0 text-center">Conversion Preview</h5>
+        </div>
+        <div class="card-body d-flex justify-content-center" id="b64EncodePreviewContent"></div>
+        <div class="card-header bg-primary text-white text-center">
+            <h5 class="mb-0 text-center"><i class="fas fa-tools"></i> Actions</h5>
+        </div>
+        <div class="d-grid gap-2 p-3 bg-gradient" id="b64EncodePreviewActions" style="background: linear-gradient(90deg, #2678c4 0%, #143a61 100%); display:none;">
+            <a id="b64EncodeDownloadBtn" class="btn btn-success w-100 mb-2" target="_blank"><i class="fas fa-download"></i> Download</a>
+            <button id="b64EncodeDiscardBtn" type="button" class="btn btn-outline-danger w-100 mb-2"><i class="fas fa-trash-alt"></i> Discard</button>
+            <button id="b64EncodeClosePreviewBtn" type="button" class="btn btn-secondary w-100"><i class="fas fa-times"></i> Close</button>
+        </div>
+    </div>
+</div>
+
+@* Partial view for Base64 decode remains unchanged *@
+<div class="col-12">
+    <div class="card my-4">
+        <div class="card-header bg-primary text-white text-center">
+            <h5 class="mb-0 text-center"><i class="fas fa-exchange-alt"></i> Base64 Decoding Tool</h5>
+        </div>
+        <div class="card-body">
+            <form id="b64DecodeForm" class="row g-3">
+                <div class="col-12">
+                    <label class="form-label" for="b64Input">Paste Base64 (Data URL or raw)</label>
+                    <textarea id="b64Input" name="base64" class="form-control" rows="6" placeholder="data:...;base64,.... or raw base64" required></textarea>
+                </div>
+                <div class="col-12">
+                    <label class="form-label" for="b64FileName">Suggested filename (optional)</label>
+                    <input id="b64FileName" name="fileName" class="form-control" placeholder="example.png" />
+                </div>
+                <div class="col-12 d-flex align-items-end">
+                    <button type="submit" class="btn btn-primary w-100">Decode Base64</button>
+                </div>
+            </form>
+            <div id="b64DecodeStatus" class="my-2"></div>
+            <div id="b64DecodePreviewCard" class="card mt-2" style="display:none;">
+                <div class="card-header bg-success text-white">
+                    <h5 class="mb-0 text-center">Conversion Preview</h5>
+                </div>
+                <div class="card-body d-flex justify-content-center" id="b64DecodePreviewContent"></div>
+                <div class="card-header bg-primary text-white text-center">
+                    <h5 class="mb-0 text-center"><i class="fas fa-tools"></i> Actions</h5>
+                </div>
+                <div class="d-grid gap-2 p-3 bg-gradient" id="b64DecodePreviewActions" style="background: linear-gradient(90deg, #2678c4 0%, #143a61 100%); display:none;">
+                    <a id="b64DecodeDownloadBtn" class="btn btn-success w-100 mb-2" target="_blank"><i class="fas fa-download"></i> Download</a>
+                    <button id="b64DecodeDiscardBtn" type="button" class="btn btn-outline-danger w-100 mb-2"><i class="fas fa-trash-alt"></i> Discard</button>
+                    <button id="b64DecodeClosePreviewBtn" type="button" class="btn btn-secondary w-100"><i class="fas fa-times"></i> Close</button>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

@@ -1,0 +1,90 @@
+@model TestTools.Models.DocumentTabsViewModel
+@using Microsoft.AspNetCore.Http
+@{
+    ViewData["Title"] = "DHCW Test Tools";
+}
+<div class="container-fluid p-0">
+    <div class="card w-100 my-4">
+        <div class="card-header bg-primary text-white">
+            <h2 class="mb-0 text-center"><i class="fas fa-tools"></i> DHCW Test Tools</h2>
+        </div>
+        <div class="card-body">
+            <ul class="nav nav-tabs w-100 justify-content-center" id="mainTabs" role="tablist">
+                <li class="nav-item" role="presentation">
+                    <button class="nav-link px-4 py-2 active" id="option1-tab" data-bs-toggle="tab" data-bs-target="#option1" type="button" role="tab" aria-controls="option1" aria-selected="true">Introduction</button>
+                </li>
+                <li class="nav-item" role="presentation">
+                    <button class="nav-link px-4 py-2" id="option2-tab" data-bs-toggle="tab" data-bs-target="#option2" type="button" role="tab" aria-controls="option2" aria-selected="false">Test Documents</button>
+                </li>
+                @* <li class="nav-item" role="presentation">
+                    <button class="nav-link px-4 py-2" id="option3-tab" data-bs-toggle="tab" data-bs-target="#option3" type="button" role="tab" aria-controls="option3" aria-selected="false">Contact Form</button>
+                </li> *@
+            </ul>
+            <div class="tab-content mt-3" id="mainTabsContent">
+                <div class="tab-pane fade show active" id="option1" role="tabpanel" aria-labelledby="option1-tab">
+                    <div class="container-fluid p-0">
+                        <div class="row">
+                            <div class="col-12">
+                                <div class="card tool-container w-100">
+                                    <div class="card-header bg-primary text-white text-center">
+                                        <h5 class="mb-0 text-center"><i class="fas fa-info-circle me-2"></i>Introduction</h5>
+                                    </div>
+                                    <div class="card-body">
+                                        <div class="text-center">
+                                            <div class="d-flex align-items-center justify-content-center mb-4">
+                                                <img src="Testing1.png" alt="Software Testing" class="img-fluid ms-3" style="max-width: 20%; height: auto;">
+                                                <div class="flex-grow-1 text-start">
+                                                    <p>
+                                                    The DHCW Test Tools application provides a suite of testing tools and utilities, aimed to assist in the streamlining of testing processes, improve collaboration, and make essential tools and documentation easily accessible for test teams, developers and other professionals across DHCW.
+                                                    </p>
+                                                    <p>
+                                                    If you experience any issues or would like to suggest additional features or improvements to the available toolset, please contact Tom Connor via <a href="mailto:tom.connor@wales.nhs.uk?subject=DHCW%20Test%20Tools%20Contact">Email</a>
+                                                     or <a href="#" onclick="openTeamsChat('tom.connor@wales.nhs.uk'); return false;">Microsoft Teams</a>
+                                                    </p>
+                                                </div>
+                                            </div>
+                                            <div class="d-flex align-items-center justify-content-center mb-4">
+                                                <div class="flex-grow-1 text-start">
+                                                    <p>
+                                                    Software Testing Teams within DHCW touch on many areas, supporting various projects with new developments, enhancements, functionality or investigating issues identified by users.
+                                                    </p>
+                                                    <p>
+                                                    Largely working as part of an agile development team that consists of Testers, Developers, Business Analysts & Design Architects, the test teams are at the core of the software development lifecycle, continually generating/executing test cases and providing feedback to the development team and stakeholders, where the main aim is to identify any issues early in the process and improve the quality of the product to be deployed.
+                                                    </p>
+                                                    <p>
+                                                    Specified requirements are converted into test scripts that fully test the new requirement produces the desired results, with any discovered defects being reported and tracked via Azure DevOps. Testing documentation is generated/maintained throughout the project lifecycle and largely dependent on project size, complexity and resources required.
+                                                    </p>
+                                                </div>
+                                                <img src="Testing2.png" alt="Agile Lifecycle" class="img-fluid me-3" style="max-width: 20%; height: auto;">
+                                            </div> 
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="tab-pane fade" id="option2" role="tabpanel" aria-labelledby="option2-tab">
+                    <div id="testDocsSection">
+                        <partial name="_TestDocsPartial" model="Model" />
+                    </div>
+                </div>
+                <!-- Removed the unused Contact Form tab-pane to prevent blank space -->
+            </div>
+        </div>
+    </div>
+</div>
+
+<script>
+    function openTeamsChat(userEmail) {
+        const teamsUrl = `https://teams.microsoft.com/l/chat/0/0?users=${encodeURIComponent(userEmail)}`;
+        window.open(teamsUrl, '_blank');
+    }
+</script>
+
+@section Scripts {
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/pdf.js/2.7.570/pdf.min.js"></script>
+    <script src="~/js/LoadingSpinner.js" asp-append-version="true"></script>
+    <script src="~/js/site.js" asp-append-version="true"></script>
+}

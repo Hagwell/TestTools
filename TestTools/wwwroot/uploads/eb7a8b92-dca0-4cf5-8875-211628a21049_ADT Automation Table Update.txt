@@ -1,0 +1,156 @@
+WpasAdt.Feature update to remove AdmissionDate and AdmissionTime and add further past/future admission scenarios:
+
+@ADT-AdmissionScenarioA
+Scenario: 004a - Admission Scenario -
+	Given I have accessed the WPAS 'admission' page
+	Then I will see the WPAS 'admission' page displayed
+	When I complete the Admission Form with the following data
+	| Hospital		     | Ward		| Service    | Clinician			| AdmissionMethod | Source        |
+	| Glangwili General Hospital | GGH - Tysul Ward | Cardiology | Wilson, D G, Dr. (GMC:3311419)	| Emergency - GP  | Referral (GP) |
+
+@ADT-AdmissionScenarioB
+Scenario: 004b - Admission Scenario -
+	Given I have accessed the WPAS 'admission' page
+	Then I will see the WPAS 'admission' page displayed
+	When I complete the Admission Form with the following data
+	| Hospital		     | Ward		   | Service		   | Clinician			    | AdmissionMethod	  | Source			     |
+	| Bronglais General Hospital | BGH - Rhiannon Ward | Paediatric Cardiology | Wilson, D G, Dr. (GMC:3311419) | Emergency - casualty | Referral from another consultant |
+
+@ADT-AdmissionScenarioC
+Scenario: 004c - Admission Scenario - Future Admission
+	Given I have accessed the WPAS 'admission' page
+	Then I will see the WPAS 'admission' page displayed
+	When I complete the Admission Form for a 'Future' admission event
+	| Hospital		     | Ward		| Service    | Clinician			| AdmissionMethod | Source        |
+	| Glangwili General Hospital | GGH - Tysul Ward | Cardiology | Wilson, D G, Dr. (GMC:3311419)	| Emergency - GP  | Referral (GP) |
+
+@ADT-AdmissionScenarioD
+Scenario: 004d - Admission Scenario - Past Admission
+	Given I have accessed the WPAS 'admission' page
+	Then I will see the WPAS 'admission' page displayed
+	When I complete the Admission Form for a 'Past' admission event
+	| Hospital		     | Ward		| Service    | Clinician			| AdmissionMethod | Source        |
+	| Glangwili General Hospital | GGH - Tysul Ward | Cardiology | Wilson, D G, Dr. (GMC:3311419)	| Emergency - GP  | Referral (GP) |
+
+
+
+WpasAdtSteps.cs update to automate Admission Date and Time outside of the table lookup and add new step definition:
+
+
+        [When("I complete the Admission Form with the following data")]
+        public void WhenICompleteTheAdmissionFormWithTheFollowingData(Table table)
+        {
+            driver.WaitForReady();
+            Adt.EnterAdmissionDate(Parameters.Dates.Present);
+            driver.WaitForReady();
+            Adt.EnterAdmissionTime(AdtParams.GetTime.GetRandomTime());
+            driver.WaitForReady();
+
+            var tableData = table.CreateInstance<AdtModel>();
+
+            // Map table data to AdtModel properties
+            tableData.Hospital = tableData.Hospital.Equals("Glangwili General Hospital") ? AdtParams.Hospitals.Hdd1 : tableData.Hospital;
+            tableData.Ward = tableData.Ward.Equals("GGH - Tysul Ward") ? AdtParams.Wards.Ggh1 : tableData.Ward;
+            tableData.Service = tableData.Service.Equals("Cardiology") ? AdtParams.Specialty.Spec1 : tableData.Service;
+            tableData.Clinician = tableData.Clinician.Equals("Wilson, D G, Dr. (GMC:3311419)") ? AdtParams.Clinicians.CardioClin1 : tableData.Clinician;
+            tableData.AdmissionMethod = tableData.AdmissionMethod.Equals("Emergency - GP") ? AdtParams.AdmissionMethod.Method5 : tableData.AdmissionMethod;
+            tableData.Source = tableData.Source.Equals("Referral (GP)") ? AdtParams.AdmissionSource.Source1 : tableData.Source;
+
+            // Pass the mapped data to the FullAdmission method
+            Adt.FullAdmission(
+                tableData.Hospital,
+                tableData.Ward,
+                tableData.Service,
+                tableData.Clinician,
+                tableData.AdmissionMethod,
+                tableData.Source
+            );
+        }
+
+        [When("I complete the Admission Form for a {string} admission event")]
+        public void WhenICompleteTheAdmissionFormForAAdmissionEvent(string value, Table table)
+        {
+            if (value == "Past")
+            {
+                driver.WaitForReady();
+                Adt.EnterAdmissionDate(Parameters.Dates.AltPast);
+                driver.WaitForReady();
+                Adt.EnterAdmissionTime(AdtParams.GetTime.GetRandomTime());
+                driver.WaitForReady();
+
+                var tableData = table.CreateInstance<AdtModel>();
+
+                // Map table data to AdtModel properties
+                tableData.Hospital = tableData.Hospital.Equals("Glangwili General Hospital") ? AdtParams.Hospitals.Hdd1 : tableData.Hospital;
+                tableData.Ward = tableData.Ward.Equals("GGH - Tysul Ward") ? AdtParams.Wards.Ggh1 : tableData.Ward;
+                tableData.Service = tableData.Service.Equals("Cardiology") ? AdtParams.Specialty.Spec1 : tableData.Service;
+                tableData.Clinician = tableData.Clinician.Equals("Wilson, D G, Dr. (GMC:3311419)") ? AdtParams.Clinicians.CardioClin1 : tableData.Clinician;
+                tableData.AdmissionMethod = tableData.AdmissionMethod.Equals("Emergency - GP") ? AdtParams.AdmissionMethod.Method5 : tableData.AdmissionMethod;
+                tableData.Source = tableData.Source.Equals("Referral (GP)") ? AdtParams.AdmissionSource.Source1 : tableData.Source;
+
+                // Pass the mapped data to the FullAdmission method
+                Adt.FullAdmission(
+                    tableData.Hospital,
+                    tableData.Ward,
+                    tableData.Service,
+                    tableData.Clinician,
+                    tableData.AdmissionMethod,
+                    tableData.Source
+                );
+
+            }
+            else if (value == "Future")
+            {
+                driver.WaitForReady();
+                Adt.EnterAdmissionDate(Parameters.Dates.AltFuture);
+                driver.WaitForReady();
+                Adt.EnterAdmissionTime(AdtParams.GetTime.GetRandomTime());
+                driver.WaitForReady();
+
+                var tableData = table.CreateInstance<AdtModel>();
+
+                // Map table data to AdtModel properties
+                tableData.Hospital = tableData.Hospital.Equals("Glangwili General Hospital") ? AdtParams.Hospitals.Hdd1 : tableData.Hospital;
+                tableData.Ward = tableData.Ward.Equals("GGH - Tysul Ward") ? AdtParams.Wards.Ggh1 : tableData.Ward;
+                tableData.Service = tableData.Service.Equals("Cardiology") ? AdtParams.Specialty.Spec1 : tableData.Service;
+                tableData.Clinician = tableData.Clinician.Equals("Wilson, D G, Dr. (GMC:3311419)") ? AdtParams.Clinicians.CardioClin1 : tableData.Clinician;
+                tableData.AdmissionMethod = tableData.AdmissionMethod.Equals("Emergency - GP") ? AdtParams.AdmissionMethod.Method5 : tableData.AdmissionMethod;
+                tableData.Source = tableData.Source.Equals("Referral (GP)") ? AdtParams.AdmissionSource.Source1 : tableData.Source;
+
+                // Pass the mapped data to the FullAdmission method
+                Adt.FullAdmission(
+                    tableData.Hospital,
+                    tableData.Ward,
+                    tableData.Service,
+                    tableData.Clinician,
+                    tableData.AdmissionMethod,
+                    tableData.Source
+                );
+            }
+            else
+            {
+                Assert.Fail("Invalid page type specified: " + value);
+            }
+        }
+    }
+}
+
+
+WpasAdtPage.cs update to handle the code changes:
+
+        public void FullAdmission(string hospital, string ward, string service, string clinician, string method, string source)
+        {
+            _driver.WaitForReady();
+            SelectAdmissionHospital(hospital);
+            _driver.WaitForReady();
+            SelectAdmissionWard(ward);
+            _driver.WaitForReady();
+            SelectAdmissionService(service);
+            _driver.WaitForReady();
+            SelectAdmissionClinician(clinician);
+            _driver.WaitForReady();
+            SelectAdmissionMethod(method);
+            _driver.WaitForReady();
+            SelectAdmissionSource(source);
+            _driver.WaitForReady();
+        }
