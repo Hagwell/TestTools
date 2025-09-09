@@ -1,0 +1,97 @@
+@{
+    ViewData["Title"] = "Test Tools User Guide";
+}
+<div class="container-fluid p-0">
+    <div class="card w-100 my-4">
+        <div class="card-header bg-primary text-white text-center">
+            <h2 class="mb-0 text-center"><i class="fas fa-book me-2"></i> @ViewData["Title"]</h2>
+        </div>
+        <div class="card-body text-center">
+            <p>DHCW Test Tools is a comprehensive web-based suite of utilities designed to streamline and support software testing, automation, and documentation processes for DHCW (Digital Health and Care Wales) teams. The application provides a unified interface for generating test data, monitoring API endpoints, converting documents, scraping web elements, and accessing essential test documentation.</p>
+            <div class="card-header bg-primary text-white text-center">
+                <h2 class="mb-0 text-center"><i class="fas fa-book me-2"></i> Features & Usage Instructions</h2>
+            </div>
+            <br />
+            <div class="card-header bg-primary text-white text-center">
+                <h3 class="mb-0 text-center"><i class="fas fa-book me-2"></i> Test Documents</h3>
+            </div>
+            <br />
+            <div class="d-flex justify-content-left align-items-left margin:30 mb-3">
+                <ul style="display:inline-block; text-align:left; margin:0 auto;">
+                    <li><b>Browse Documents:</b> Use the Test Documents tab to browse available guides and reference material.</li>
+                    <li><b>Filter Documents:</b> Filter by category (Education, Framework, Support, Instructions) using the dropdown or search box.</li>
+                    <li><b>View PDFs Inline:</b> Click a document name to preview it directly in the browser using the built-in PDF viewer.</li>
+                    <li><b>Download Documents:</b> Use the download button to save a copy locally for offline use.</li>
+                    <li><b>Troubleshooting:</b> If a document fails to load, check your browser's PDF support or contact the Test Team for assistance.</li>
+                </ul>
+            </div>
+            <div class="card-header bg-primary text-white text-center">
+                <h3 class="mb-0 text-center"><i class="fas fa-book me-2"></i> Service Checker</h3>
+            </div>
+            <br />
+            <div class="d-flex justify-content-left align-items-left margin:30 mb-3">
+                <ul style="display:inline-block; text-align:left; margin:0 auto;">
+                    <li><b>Endpoint Availability:</b> The Service Checker tab lists all configured API endpoints.</li>
+                    <li><b>Montior Endpoints</b> Click 'Check Status' to poll each endpoint and view live status, response time, and error details.</li>
+                    <li><b>Export Results:</b> Download the latest status report as CSV for sharing or archiving.</li>
+                    <li><b>Visualize Health:</b> Review the health chart for trends and performance over time. Hover over chart points for details.</li>
+                    <li><b>Troubleshooting:</b> If an endpoint fails, check the error message and try rechecking.</li>
+                </ul>
+            </div>
+            <div class="card-header bg-primary text-white text-center">
+                <h3 class="mb-0 text-center"><i class="fas fa-book me-2"></i> Patient Generator</h3>
+            </div>
+            <br />
+            <div class="d-flex justify-content-left align-items-left margin:30 mb-3">
+                <ul style="display:inline-block; text-align:left; margin:0 auto;">
+                    <li><b>Generate Patients:</b> Enter the desired number of test patients and click 'Generate'. The tool creates synthetic patient record data.</li>
+                    <li><b>Export as CSV:</b> Download the generated patients for use in test scripts or data import.</li>
+                    <li><b>HL7 Message Generation:</b> Switch to the HL7 tab to generate HL7 messages for Master Patient Index and All Wales scenarios.</li>
+                    <li><b>Export HL7 Message</b> Export demographics as HL7 formatted message for use within patient registry systems.</li>
+                    <li><b>Clear/Reset:</b> Use the clear button to reset the form and start a new generation.</li>
+                    <li><b>Tips:</b> Adjust patient count for load testing. Use generated HL7 for interoperability tests.</li>
+                </ul>
+            </div>
+            <div class="card-header bg-primary text-white text-center">
+                <h3 class="mb-0 text-center"><i class="fas fa-book me-2"></i> XML Comparison</h3>
+            </div>
+            <br />
+            <div class="d-flex justify-content-left align-items-left margin:30 mb-3">
+                <ul style="display:inline-block; text-align:left; margin:0 auto;">
+                    <li><b>Compare XML Files:</b> Paste or upload two XML files/text blocks. Click 'Compare' to highlight differences.</li>
+                    <li><b>Merge XML:</b> Use the merge feature to combine changes and download the merged result.</li>
+                    <li><b>Download Results:</b> Save the diff or merged XML for documentation or further testing.</li>
+                    <li><b>Tips:</b> Use for regression testing, schema validation, and integration verification.</li>
+                    <li><b>Troubleshooting:</b> Ensure both XML files are well-formed. Malformed XML will cause errors.</li>
+                </ul>
+            </div>
+            <div class="card-header bg-primary text-white text-center">
+                <h3 class="mb-0 text-center"><i class="fas fa-book me-2"></i> File Conversion</h3>
+            </div>
+            <br />
+            <div class="d-flex justify-content-left align-items-left margin:30 mb-3">
+                <ul style="display:inline-block; text-align:left; margin:0 auto;">
+                    <li><b>Convert Documents:</b> Drag and drop or select a file to convert. Choose the target format (PDF, DOCX, HTML, TXT, MD).</li>
+                    <li><b>Image Conversion:</b> Upload images and select the desired output format (PNG, JPG, GIF, BMP, WEBP).</li>
+                    <li><b>Base64 Encode/Decode:</b> Use the Base64 tool to encode files/images or decode Base64 strings back to files.</li>
+                    <li><b>Preview & Download:</b> Preview converted files and download them directly from the browser.</li>
+                    <li><b>Troubleshooting:</b> Ensure files are supported and do not exceed size limits. Unsupported formats will show an error.</li>
+                </ul>
+            </div>
+            <div class="card-header bg-primary text-white text-center">
+                <h3 class="mb-0 text-center"><i class="fas fa-book me-2"></i> Web Scraper</h3>
+            </div>
+            <br />
+            <div class="d-flex justify-content-left align-items-left margin:30 mb-3">
+                <ul style="display:inline-block; text-align:left; margin:0 auto;">
+                    <li><b>Single Page Scrape:</b> Enter URL, select Add URL button and click 'Scrape' to extract elements for automation testing.</li>
+                    <li><b>Multiple Page Scrape:</b> Add list of URLs and click 'Scrape' to extract elements for automation testing.</li>
+                    <li><b>Review Results:</b> View extracted elements in a table. Use filters to find specific selectors.</li>
+                    <li><b>Export for POM:</b> Download extracted selectors for use in Page Object Models (POM) in your test automation framework.</li>
+                    <li><b>Mobile-Friendly:</b> The interface adapts for use on mobile devices and tablets.</li>
+                    <li><b>Troubleshooting:</b> Ensure the target URL is reachable and valid. Unreachable pages will show an error.</li>
+                </ul>
+            </div>
+        </div>
+    </div>
+</div>

@@ -65,6 +65,32 @@ git push azure main
 - Connect to your repository and follow the wizard
 - Use the provided YAML template or customize as needed
 
+### 5.1 Create Azure resources and Service Principal (for Azure DevOps service connection)
+You can create a resource group, App Service plan, Web App and a service principal that Azure DevOps will use to deploy the app. Run these commands in PowerShell (you will be prompted to sign in):
+
+```powershell
+# variables - change these
+$rgName = 'TestTools-rg'
+$location = 'eastus'
+$appServicePlan = 'TestTools-Plan'
+$webAppName = 'DHCW-TestTools-App' # must be globally unique
+
+# create resource group
+az group create --name $rgName --location $location
+
+# create app service plan (Windows)
+az appservice plan create --name $appServicePlan --resource-group $rgName --sku B1 --is-linux false
+
+# create web app
+az webapp create --name $webAppName --resource-group $rgName --plan $appServicePlan --runtime "DOTNET:8.0"
+
+# create a service principal for Azure DevOps and output JSON credentials
+az ad sp create-for-rbac --name "http://TestTools-AzureDevOps-SP" --role contributor --scopes /subscriptions/$(az account show --query id -o tsv)/resourceGroups/$rgName
+
+```
+
+Use the JSON output from the `az ad sp create-for-rbac` command to create a service connection in Azure DevOps (Project settings > Service connections > New service connection > Azure Resource Manager > Service principal (manual)).
+
 ---
 
 ## 6. Troubleshooting

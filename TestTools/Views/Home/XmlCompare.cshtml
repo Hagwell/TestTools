@@ -17,6 +17,8 @@
                 <div class="card-header bg-primary text-white">
                     <h5 class="mb-0 text-center"><i class="fas fa-upload"></i> Upload XML Files</h5>
                 </div>
+                <br />
+                    <p class="mb-3 text-center"><b>Please note</b> this is a protoype version that performs a basic comparison/merge of two XML documents.</p>
                 <form asp-action="XmlCompare" method="post" enctype="multipart/form-data" class="mb-4">
                         @Html.AntiForgeryToken()
                         <input type="hidden" id="ComparisonPerformed" name="ComparisonPerformed" value="@Model.ComparisonPerformed.ToString().ToLower()" />

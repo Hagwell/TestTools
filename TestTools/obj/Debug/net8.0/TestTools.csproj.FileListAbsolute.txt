@@ -133,3 +133,5 @@ C:\Users\to080141\source\Workspaces\TestTools\TestTools\obj\Debug\net8.0\refint\
 C:\Users\to080141\source\Workspaces\TestTools\TestTools\obj\Debug\net8.0\TestTools.pdb
 C:\Users\to080141\source\Workspaces\TestTools\TestTools\obj\Debug\net8.0\TestTools.genruntimeconfig.cache
 C:\Users\to080141\source\Workspaces\TestTools\TestTools\obj\Debug\net8.0\ref\TestTools.dll
+C:\Users\to080141\source\Workspaces\TestTools\TestTools\obj\Debug\net8.0\TestTools.sourcelink.json
+C:\Users\to080141\source\Workspaces\TestTools\TestTools\obj\Debug\net8.0\staticwebassets.upToDateCheck.txt

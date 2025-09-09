@@ -25,6 +25,13 @@ window.enableHtmlPreviewHotReload = true; // Set to false for deployment
         }
         if (discardBtn) {
             discardBtn.onclick = async function () {
+                // For Base64 encode preview, just clear and hide the preview card
+                if (cardId === 'b64EncodePreviewCard') {
+                    if (content) content.innerHTML = '';
+                    card.style.display = 'none';
+                    if (actions) actions.style.display = 'none';
+                    return;
+                }
                 if (!fileName) return;
                 try {
                     const fd = new FormData();
@@ -189,7 +196,26 @@ window.enableHtmlPreviewHotReload = true; // Set to false for deployment
                 // Show preview card and actions only when preview is requested
                 document.getElementById('b64EncodePreviewCard').style.display = '';
                 document.getElementById('b64EncodePreviewActions').style.display = '';
-                if (b64Result.value) showPreviewInCard('b64EncodePreviewCard', 'image', b64Result.value, '', null, null);
+                if (b64Result.value) {
+                    // Detect content type from data URL
+                    let previewType = 'download';
+                    let contentType = '';
+                    let base64 = b64Result.value;
+                    if (base64.startsWith('data:')) {
+                        const match = base64.match(/^data:([^;]+);base64,/);
+                        if (match) {
+                            contentType = match[1];
+                            if (contentType.startsWith('image/')) previewType = 'image';
+                            else if (contentType === 'application/pdf') previewType = 'iframe';
+                            else if (contentType === 'text/html') previewType = 'iframe';
+                            else if (contentType === 'text/plain') previewType = 'text';
+                            else if (contentType === 'text/markdown') previewType = 'text';
+                            else if (contentType === 'application/vnd.openxmlformats-officedocument.wordprocessingml.document') previewType = 'download';
+                            else previewType = 'download';
+                        }
+                    }
+                    showPreviewInCard('b64EncodePreviewCard', previewType, b64Result.value, contentType, null, null);
+                }
             });
         }
         if (b64CopyBtn) {

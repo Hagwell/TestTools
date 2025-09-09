@@ -284,3 +284,4 @@ C:\Users\to080141\source\Workspaces\TestTools\TestTools.Tests\TestTools.Tests\bi
 C:\Users\to080141\source\Workspaces\TestTools\TestTools.Tests\TestTools.Tests\bin\Debug\net8.0\TestTools.dll
 C:\Users\to080141\source\Workspaces\TestTools\TestTools.Tests\TestTools.Tests\bin\Debug\net8.0\TestTools.pdb
 C:\Users\to080141\source\Workspaces\TestTools\TestTools.Tests\TestTools.Tests\bin\Debug\net8.0\nunit.framework.legacy.dll
+C:\Users\to080141\source\Workspaces\TestTools\TestTools.Tests\TestTools.Tests\obj\Debug\net8.0\TestTools.Tests.sourcelink.json

@@ -716,7 +716,7 @@ namespace TestTools.Controllers
         }
         #endregion
 
-        public IActionResult Privacy()
+        public IActionResult UserGuide()
         {
             return View();
         }
